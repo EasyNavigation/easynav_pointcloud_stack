@@ -141,7 +141,7 @@ void PointcloudMapsBuilderNode::cycle()
       processed_perceptions.downsample(downsample_resolution_);
     }
 
-    auto downsampled_points = processed_perceptions.as_points(0);
+    auto downsampled_points = processed_perceptions.as_points();
     if (downsampled_points.empty()) {
       return;
     }
