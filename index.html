@@ -88,7 +88,32 @@ $(function(){ initResizable(false); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a></p>
-</div></div><!-- PageDoc -->
+<p>This stack is part of the Easy Navigation (EasyNav) project developed by the Intelligent Robotics Lab. It is composed of the <b>pointcloud_maps_builder</b> package and the <b>pointcloud_maps_manager</b> package (currently under construction).</p>
+<p>The <code>PointcloudMapsBuilderNode</code> subscribes to point cloud sensor data, downsamples and fuses it, and republishes the processed data for mapping or further processing.</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Parameters</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Parameter Name   </th><th class="markdownTableHeadNone">Type   </th><th class="markdownTableHeadNone">Default   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>sensor_topic</code>   </td><td class="markdownTableBodyNone">string   </td><td class="markdownTableBodyNone"><code>points</code>   </td><td class="markdownTableBodyNone">Topic to subscribe for point cloud input    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>downsample_resolution</code>   </td><td class="markdownTableBodyNone">double   </td><td class="markdownTableBodyNone"><code>1.0</code>   </td><td class="markdownTableBodyNone">Resolution to use when downsampling    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>perception_default_frame</code>   </td><td class="markdownTableBodyNone">string   </td><td class="markdownTableBodyNone"><code>map</code>   </td><td class="markdownTableBodyNone">Target frame for fusing point clouds   </td></tr>
+</table>
+<hr  />
+<h1><a class="anchor" id="autotoc_md3"></a>
+Installation</h1>
+<p>Clone the repository into your ROS 2 workspace: </p><div class="fragment"><div class="line">cd ~/ros2_ws/src</div>
+<div class="line">git clone https://github.com/EasyNavigation/easynav_pointcloud_stack.git</div>
+<div class="line">cd ..</div>
+<div class="line">colcon build --packages-select easynav_pointcloud_maps_builder</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
+Usage</h1>
+<p>Source your workspace: </p><div class="fragment"><div class="line">source ~/ros2_ws/install/setup.bash</div>
+</div><!-- fragment --><p> Run the lifecycle node: </p><div class="fragment"><div class="line">ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_node</div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 <!-- start footer part -->
