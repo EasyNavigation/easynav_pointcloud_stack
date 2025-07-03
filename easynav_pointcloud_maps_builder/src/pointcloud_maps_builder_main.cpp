@@ -17,6 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 
@@ -34,7 +35,7 @@ int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
 
-  auto node = std::make_shared<easynav::PointcloudMapsBuilderNode>(rclcpp::NodeOptions());
+  auto node = easynav::PointcloudMapsBuilderNode::make_shared();
 
   rclcpp::executors::SingleThreadedExecutor exec;
   exec.add_node(node->get_node_base_interface());
@@ -60,7 +61,7 @@ int main(int argc, char **argv)
   }
 
   tf2_ros::TransformListener tf_listener(*tf_buffer, tf_node, true);
-  rclcpp::Rate rate(10);
+  rclcpp::Rate rate(100);
 
   while (rclcpp::ok()) {
     exec.spin_some();

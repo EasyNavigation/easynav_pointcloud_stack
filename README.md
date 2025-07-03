@@ -36,3 +36,25 @@ Run the lifecycle node:
 ```bash
 ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_node
 ```
+## Test
+
+1. Create a parameter YAML file (e.g., `params.yaml`) with the following content:
+
+```yaml
+pointcloud_maps_builder_node:
+  ros__parameters:
+    use_sim_time: true
+    sensors: [map]
+    downsample_resolution: 0.1
+    perception_default_frame: map
+    map:
+      topic: map
+      type: sensor_msgs/msg/PointCloud2
+      group: points
+```
+
+2. Run the node using the parameter file with this command:
+```
+ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_main \
+--ros-args --params-file src/easynav_pointcloud_stack/params.yaml
+```
