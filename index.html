@@ -113,7 +113,27 @@ Installation</h1>
 Usage</h1>
 <p>Source your workspace: </p><div class="fragment"><div class="line">source ~/ros2_ws/install/setup.bash</div>
 </div><!-- fragment --><p> Run the lifecycle node: </p><div class="fragment"><div class="line">ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_node</div>
-</div><!-- fragment --> </div></div><!-- PageDoc -->
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md5"></a>
+Test</h1>
+<ol type="1">
+<li>Create a parameter YAML file (e.g., <code>params.yaml</code>) with the following content:</li>
+</ol>
+<div class="fragment"><div class="line">pointcloud_maps_builder_node:</div>
+<div class="line">  ros__parameters:</div>
+<div class="line">    use_sim_time: true</div>
+<div class="line">    sensors: [map]</div>
+<div class="line">    downsample_resolution: 0.1</div>
+<div class="line">    perception_default_frame: map</div>
+<div class="line">    map:</div>
+<div class="line">      topic: map</div>
+<div class="line">      type: sensor_msgs/msg/PointCloud2</div>
+<div class="line">      group: points</div>
+</div><!-- fragment --><ol type="1">
+<li>Run the node using the parameter file with this command: <div class="fragment"><div class="line">ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_main \</div>
+<div class="line">--ros-args --params-file src/easynav_pointcloud_stack/params.yaml</div>
+</div><!-- fragment --> </li>
+</ol>
+</div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 <!-- start footer part -->
