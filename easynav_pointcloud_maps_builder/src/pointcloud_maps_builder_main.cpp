@@ -56,7 +56,7 @@ int main(int argc, char **argv)
   }
 
   tf2_ros::TransformListener tf_listener(*tf_buffer, tf_node, true);
-  rclcpp::Rate rate(100);
+  rclcpp::Rate rate(10);
 
   while (rclcpp::ok()) {
     exec.spin_some();

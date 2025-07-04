@@ -16,11 +16,15 @@ find_package(rclcpp_lifecycle REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(easynav_common REQUIRED)
 
-include_directories(include)
 
 # Library
 add_library(${PROJECT_NAME} SHARED
   src/easynav_pointcloud_maps_builder/PointcloudMapsBuilderNode.cpp
+)
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
@@ -30,34 +34,30 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   easynav_common::easynav_common
 )
 
-# Executable
-add_executable(pointcloud_maps_builder_main src/pointcloud_maps_builder_main.cpp)
-
-target_link_libraries(pointcloud_maps_builder_main PUBLIC
-  ${PROJECT_NAME}
-  rclcpp::rclcpp
-  rclcpp_lifecycle::rclcpp_lifecycle
-  sensor_msgs::sensor_msgs_library
-  easynav_common::easynav_common
-)
-
 # Install headers
 install(DIRECTORY include/
-  DESTINATION include/
+  DESTINATION include/${PROJECT_NAME}
 )
 
 # Install targets
 install(TARGETS
   ${PROJECT_NAME}
-  pointcloud_maps_builder_main
+  EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
+# Executable
+add_executable(pointcloud_maps_builder_main src/pointcloud_maps_builder_main.cpp)
+target_link_libraries(pointcloud_maps_builder_main PUBLIC
+  ${PROJECT_NAME}
+)
 # Tests
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
+  set(ament_cmake_copyright_FOUND TRUE)
+  set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 
   find_package(ament_cmake_gtest REQUIRED)
@@ -65,8 +65,9 @@ if(BUILD_TESTING)
 endif()
 
 # Export
-ament_export_include_directories(include)
+ament_export_include_directories("include/${PROJECT_NAME}")
 ament_export_libraries(${PROJECT_NAME})
+ament_export_targets(export_${PROJECT_NAME})
 ament_export_dependencies(
   rclcpp
   rclcpp_lifecycle

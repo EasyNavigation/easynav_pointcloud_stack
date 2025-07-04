@@ -86,7 +86,7 @@ PointcloudMapsBuilderNode::on_configure(const rclcpp_lifecycle::State & state)
     get_parameter(sensor_id + ".type", msg_type);
     get_parameter(sensor_id + ".group", group);
 
-    RCLCPP_INFO(get_logger(),
+    RCLCPP_DEBUG(get_logger(),
                   "Loaded sensor parameters: id=%s topic=%s type=%s group=%s",
                   sensor_id.c_str(), topic.c_str(), msg_type.c_str(), group.c_str());
 
@@ -101,8 +101,8 @@ PointcloudMapsBuilderNode::on_configure(const rclcpp_lifecycle::State & state)
 
     perceptions_[group].emplace_back(PerceptionPtr{ptr, sub});
 
-    RCLCPP_INFO(get_logger(), "Creating perception for sensor %s", sensor_id.c_str());
-    RCLCPP_INFO(get_logger(), "Handler group = %s", group.c_str());
+    RCLCPP_DEBUG(get_logger(), "Creating perception for sensor %s", sensor_id.c_str());
+    RCLCPP_DEBUG(get_logger(), "Handler group = %s", group.c_str());
   }
 
   return CallbackReturnT::SUCCESS;
