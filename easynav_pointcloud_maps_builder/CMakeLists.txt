@@ -34,6 +34,12 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   easynav_common::easynav_common
 )
 
+# Executable
+add_executable(pointcloud_maps_builder_main src/pointcloud_maps_builder_main.cpp)
+target_link_libraries(pointcloud_maps_builder_main PUBLIC
+  ${PROJECT_NAME}
+)
+
 # Install headers
 install(DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
@@ -42,17 +48,14 @@ install(DIRECTORY include/
 # Install targets
 install(TARGETS
   ${PROJECT_NAME}
+  pointcloud_maps_builder_main
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
-# Executable
-add_executable(pointcloud_maps_builder_main src/pointcloud_maps_builder_main.cpp)
-target_link_libraries(pointcloud_maps_builder_main PUBLIC
-  ${PROJECT_NAME}
-)
+
 # Tests
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
