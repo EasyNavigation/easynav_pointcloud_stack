@@ -116,7 +116,6 @@ PointCloudData::refresh(
 void
 PointCloudData::to_point_cloud(sensor_msgs::msg::PointCloud2 & cloud_msg) const
 {
-  std::cerr << "Getting Data from msg\n";
   cloud_msg.width = static_cast<uint32_t>(width_);
   cloud_msg.height = static_cast<uint32_t>(height_);
   cloud_msg.point_step = static_cast<uint32_t>(point_step_);
@@ -185,9 +184,10 @@ PointCloudData::load_from_file(const std::string & path)
 }
 
 void
-PointCloudData::show(void) const
+PointCloudData::show(const std::string & comment) const
 {
   std::cerr << ":: PointCloudData values :: \n";
+  std::cerr << "Comment: " << comment << "\n";
   std::cerr << "width: " << width_ << "\n";
   std::cerr << "height: " << height_ << "\n";
   std::cerr << "point step: " << point_step_ << "\n";

@@ -127,7 +127,7 @@ public:
    */
   bool load_from_file(const std::string & path);
 
-  void show(void) const;
+  void show(const std::string & comment) const;
 
 private:
   std::size_t width_;
