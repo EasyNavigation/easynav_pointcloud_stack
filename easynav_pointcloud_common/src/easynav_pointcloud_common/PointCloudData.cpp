@@ -186,7 +186,7 @@ PointCloudData::load_from_file(const std::string & path)
 void
 PointCloudData::show(const std::string & comment) const
 {
-  std::cerr << ":: PointCloudData values :: \n";
+  std::cerr << ":: PointCloudData Values :: \n";
   std::cerr << "Comment: " << comment << "\n";
   std::cerr << "width: " << width_ << "\n";
   std::cerr << "height: " << height_ << "\n";

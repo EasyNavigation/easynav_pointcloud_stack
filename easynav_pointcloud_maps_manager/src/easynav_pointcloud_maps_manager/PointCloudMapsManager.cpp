@@ -55,39 +55,55 @@ PointCloudMapsManager::on_initialize()
   auto node = get_node();
   const auto & plugin_name = get_plugin_name();
 
-  std::string map_path_file, map_topic_in;
+  std::string package_name, map_path_file, map_topic_in;
+  node->declare_parameter(plugin_name + ".package_name", package_name);
   node->declare_parameter(plugin_name + ".map_path_file", map_path_file);
   node->declare_parameter(plugin_name + ".map_topic_in", map_topic_in);
 
+  node->get_parameter(plugin_name + ".package_name", package_name);
   node->get_parameter(plugin_name + ".map_path_file", map_path_file);
   node->get_parameter(plugin_name + ".map_topic_in", map_topic_in);
 
-  std::cerr << ":: PARAMETERS :: \n";
-  std::cerr << "Map path file: " << map_path_file << "\n";
-  std::cerr << "map topic in name: " << map_topic_in << "\n";
+  RCLCPP_INFO(get_node()->get_logger(),
+        "PointCloud :    ..:: PARAMETERS ::..");
 
-  if (map_path_file != "") {
-    map_path_ = map_path_file;
+  if (package_name != "" && map_path_file != "") {
+    std::string pkgpath;
+    try {
+      pkgpath = ament_index_cpp::get_package_share_directory(package_name);
+      RCLCPP_INFO(get_node()->get_logger(),
+        "PointCloud : Package name = %s", package_name.c_str());
+      map_path_ = pkgpath + "/" + map_path_file;
+      RCLCPP_INFO(get_node()->get_logger(),
+        "PointCloud : Map path file = %s", map_path_.c_str());
+    } catch(ament_index_cpp::PackageNotFoundError & ex) {
+      return std::unexpected("Package " + package_name + " not found. Error: " + ex.what());
+    }
 
     if (!static_map_.load_from_file(map_path_)) {
       return std::unexpected("File [" + map_path_ + "] not found");
     } else {
       RCLCPP_INFO(get_node()->get_logger(),
-        "PointCloudMapsManager : Map loaded from file");
+        "PointCloud : Map loaded from file");
       dynamic_map_.deep_copy(static_map_);
     }
   } else {
-    map_path_ = "map.pcd";
+    map_path_ = "pointcloud_map.pcd";
     RCLCPP_INFO(get_node()->get_logger(),
-      "PointCloudMapsManager: Map path file to save: %s", map_path_.c_str());
+      "PointCloud : Path Map file to save = ./%s", map_path_.c_str());
   }
 
   std::string topic_name;
   if (map_topic_in != "") {
     topic_name = map_topic_in;
+    RCLCPP_INFO(get_node()->get_logger(),
+      "PointCloud : Map topic in name = %s", topic_name.c_str());
   } else {
     topic_name = node->get_name() + std::string("/") + plugin_name + "/topic_in";
+    RCLCPP_INFO(get_node()->get_logger(),
+        "PointCloud : Input Topic by default");
   }
+  
 
   static_map_pub_ = node->create_publisher<sensor_msgs::msg::PointCloud2>(
     node->get_name() + std::string("/") + plugin_name + "/static_map",
@@ -101,7 +117,7 @@ PointCloudMapsManager::on_initialize()
     [this](sensor_msgs::msg::PointCloud2::UniquePtr msg) {
 
       RCLCPP_INFO(get_node()->get_logger(),
-      "PointCloudMapsManager: topic_callback: reading map");
+      "PointCloud : topic_callback : Reading Map");
       static_map_.from_point_cloud(*msg);
 
       static_map_.to_point_cloud(static_map_msg_);
@@ -118,12 +134,14 @@ PointCloudMapsManager::on_initialize()
       std::shared_ptr<std_srvs::srv::Trigger::Response> response)
     {
       (void)request;
+
       if (!static_map_.save_to_file(map_path_)) {
         response->success = false;
-        response->message = "Failed to save map to: " + map_path_;
+        response->message = "PointCloud : Failed to save map to: " + map_path_;
       } else {
+        static_map_.show("Data to be saved");
         response->success = true;
-        response->message = "Map successfully saved to: " + map_path_;
+        response->message = "PointCloud : Map successfully saved to: " + map_path_;
       }
     });
 
@@ -159,7 +177,6 @@ PointCloudMapsManager::set_dynamic_map(const PointCloudData & new_map)
 void
 PointCloudMapsManager::update(NavState & nav_state)
 {
-
   dynamic_map_.deep_copy(static_map_);
 
   if (nav_state.has("points")) {
