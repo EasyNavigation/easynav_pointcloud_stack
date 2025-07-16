@@ -19,9 +19,11 @@ The `PointcloudMapsBuilderNode` subscribes to point cloud sensor data, downsampl
 ### Installation
 
 Clone the repository into your ROS 2 workspace:
+
 ```bash
 cd ~/ros2_ws/src
 git clone https://github.com/EasyNavigation/easynav_pointcloud_stack.git
+git clone https://github.com/EasyNavigation/easynav_outdoor_testcase.git
 cd ..
 colcon build --packages-select easynav_pointcloud_maps_builder
 ```
@@ -29,13 +31,17 @@ colcon build --packages-select easynav_pointcloud_maps_builder
 ### Usage
 
 Source your workspace:
+
 ```bash
 source ~/ros2_ws/install/setup.bash
 ```
+
 Run the lifecycle node:
+
 ```bash
 ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_node
 ```
+
 ## Test
 
 1. Create a parameter YAML file (e.g., `params.yaml`) with the following content:
@@ -54,9 +60,10 @@ pointcloud_maps_builder_node:
 ```
 
 2. Run the node using the parameter file with this command:
-```
+
+``` bash
 ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_main \
---ros-args --params-file src/easynav_pointcloud_stack/params.yaml
+--ros-args --params-file src/easynav_outdoor_testcase/params.yaml
 ```
 
 ## Pointcloud Maps Manager
@@ -77,14 +84,16 @@ By each `map_types` define in the params file is required to define the followin
 | `package_name`        | string | ` `                            | Package name where is located the `pcd` file.|
 | `map_path_file`       | string | `pointcloud_map.pcd`      | Filename for `pcd` map file.     |
 
->> note: The `map_path_file` is only required if the `package_name` is defined. If not, the point cloud data will be read from topic defined in `map_topic_in`.
+>> **Note:** The `map_path_file` is only required if the `package_name` is defined. If not, the point cloud data will be read from topic defined in `map_topic_in`.
 
 ### Installation
 
 Clone the repository into your ROS 2 workspace:
-```bash
+
+``` bash
 cd ~/ros2_ws/src
 git clone https://github.com/EasyNavigation/easynav_pointcloud_stack.git
+git clone https://github.com/EasyNavigation/easynav_outdoor_testcase.git
 cd ..
 colcon build --packages-select easynav_pointcloud_maps_manager easynav_pointcloud_common
 ```
@@ -92,12 +101,15 @@ colcon build --packages-select easynav_pointcloud_maps_manager easynav_pointclou
 ### Usage
 
 Source your workspace:
+
 ```bash
 source ~/ros2_ws/install/setup.bash
 ```
-Run the lifecycle node:
+
+Run the main node:
+
 ```bash
-ros2 run easynav_system system_main --ros-args --params-file <ros workspace path>/src/easynav_pointcloud_stack/robot_params/maps_manager.params.yaml
+ros2 run easynav_system system_main --ros-args --params-file <yaml file with parameters>
 ```
 
 The file `maps_manager.params.yaml` could be modified to include the desired point cloud map types and their respective parameters.
