@@ -107,7 +107,7 @@ protected:
   /**
    * @brief Full path to the map file.
    */
-  std::string map_path_;
+  std::string map_path_ {"/tmp/map.pcd"};
 
 private:
   /**

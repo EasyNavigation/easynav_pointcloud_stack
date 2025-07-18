@@ -88,7 +88,6 @@ PointCloudMapsManager::on_initialize()
       dynamic_map_.deep_copy(static_map_);
     }
   } else {
-    map_path_ = "pointcloud_map.pcd";
     RCLCPP_INFO(get_node()->get_logger(),
       "PointCloud : Path Map file to save = ./%s", map_path_.c_str());
   }
