@@ -89,9 +89,11 @@ $(function(){ initResizable(false); });
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a></p>
 <p>This stack is part of the Easy Navigation (EasyNav) project developed by the Intelligent Robotics Lab. It is composed of the <b>pointcloud_maps_builder</b> package and the <b>pointcloud_maps_manager</b> package (currently under construction).</p>
-<p>The <code>PointcloudMapsBuilderNode</code> subscribes to point cloud sensor data, downsamples and fuses it, and republishes the processed data for mapping or further processing.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-Parameters</h1>
+Pointcloud Maps Builder</h1>
+<p>The <code>PointcloudMapsBuilderNode</code> subscribes to point cloud sensor data, downsamples and fuses it, and republishes the processed data for mapping or further processing.</p>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Parameters</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Parameter Name   </th><th class="markdownTableHeadNone">Type   </th><th class="markdownTableHeadNone">Default   </th><th class="markdownTableHeadNone">Description    </th></tr>
@@ -103,17 +105,21 @@ Parameters</h1>
 <td class="markdownTableBodyNone"><code>perception_default_frame</code>   </td><td class="markdownTableBodyNone">string   </td><td class="markdownTableBodyNone"><code>map</code>   </td><td class="markdownTableBodyNone">Target frame for fusing point clouds   </td></tr>
 </table>
 <hr  />
-<h1><a class="anchor" id="autotoc_md3"></a>
-Installation</h1>
-<p>Clone the repository into your ROS 2 workspace: </p><div class="fragment"><div class="line">cd ~/ros2_ws/src</div>
+<h2><a class="anchor" id="autotoc_md4"></a>
+Installation</h2>
+<p>Clone the repository into your ROS 2 workspace:</p>
+<div class="fragment"><div class="line">cd ~/ros2_ws/src</div>
 <div class="line">git clone https://github.com/EasyNavigation/easynav_pointcloud_stack.git</div>
+<div class="line">git clone https://github.com/EasyNavigation/easynav_outdoor_testcase.git</div>
 <div class="line">cd ..</div>
 <div class="line">colcon build --packages-select easynav_pointcloud_maps_builder</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
-Usage</h1>
-<p>Source your workspace: </p><div class="fragment"><div class="line">source ~/ros2_ws/install/setup.bash</div>
-</div><!-- fragment --><p> Run the lifecycle node: </p><div class="fragment"><div class="line">ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_node</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md5"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
+Usage</h2>
+<p>Source your workspace:</p>
+<div class="fragment"><div class="line">source ~/ros2_ws/install/setup.bash</div>
+</div><!-- fragment --><p>Run the lifecycle node:</p>
+<div class="fragment"><div class="line">ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_node</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
 Test</h1>
 <ol type="1">
 <li>Create a parameter YAML file (e.g., <code>params.yaml</code>) with the following content:</li>
@@ -129,11 +135,69 @@ Test</h1>
 <div class="line">      type: sensor_msgs/msg/PointCloud2</div>
 <div class="line">      group: points</div>
 </div><!-- fragment --><ol type="1">
-<li>Run the node using the parameter file with this command: <div class="fragment"><div class="line">ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_main \</div>
-<div class="line">--ros-args --params-file src/easynav_pointcloud_stack/params.yaml</div>
-</div><!-- fragment --> </li>
+<li>Run the node using the parameter file with this command:</li>
 </ol>
-</div></div><!-- PageDoc -->
+<div class="fragment"><div class="line"> bash</div>
+<div class="line">ros2 run easynav_pointcloud_maps_builder pointcloud_maps_builder_main \</div>
+<div class="line">--ros-args --params-file src/easynav_outdoor_testcase/params.yaml</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md7"></a>
+Pointcloud Maps Manager</h1>
+<p>The <code>PointcloudMapsManager</code> subscribes to point cloud topic managed by Maps Builder. There is another option when the point cloud is stored in a Point Cloud Data file (<code>.pcd</code>). The manager can handle both cases, allowing for flexible integration with existing point cloud data.</p>
+<h2><a class="anchor" id="autotoc_md8"></a>
+Parameters</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Parameter Name   </th><th class="markdownTableHeadNone">Type   </th><th class="markdownTableHeadNone">Default   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>map_types</code>   </td><td class="markdownTableBodyNone">string   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">Map representation defined by map manager   </td></tr>
+</table>
+<p>By each <code>map_types</code> define in the params file is required to define the following parameters:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Parameter Name   </th><th class="markdownTableHeadNone">Type   </th><th class="markdownTableHeadNone">Default   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>map_topic_in</code>   </td><td class="markdownTableBodyNone">string   </td><td class="markdownTableBodyNone"><code>/&lt;node name&gt;/&lt;plugin name&gt;/topic_in</code>   </td><td class="markdownTableBodyNone">Topic where the point cloud is received    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>package_name</code>   </td><td class="markdownTableBodyNone">string   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">Package name where is located the <code>pcd</code> file.    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>map_path_file</code>   </td><td class="markdownTableBodyNone">string   </td><td class="markdownTableBodyNone"><code>pointcloud_map.pcd</code>   </td><td class="markdownTableBodyNone">Filename for <code>pcd</code> map file.   </td></tr>
+</table>
+<blockquote class="doxtable">
+<blockquote class="doxtable">
+<p><b>Note:</b> The <code>map_path_file</code> is only required if the <code>package_name</code> is defined. If not, the point cloud data will be read from topic defined in <code>map_topic_in</code>. </p>
+</blockquote>
+</blockquote>
+<h2><a class="anchor" id="autotoc_md9"></a>
+Installation</h2>
+<p>Clone the repository into your ROS 2 workspace:</p>
+<div class="fragment"><div class="line"> bash</div>
+<div class="line">cd ~/ros2_ws/src</div>
+<div class="line">git clone https://github.com/EasyNavigation/easynav_pointcloud_stack.git</div>
+<div class="line">git clone https://github.com/EasyNavigation/easynav_outdoor_testcase.git</div>
+<div class="line">cd ..</div>
+<div class="line">colcon build --packages-select easynav_pointcloud_maps_manager easynav_pointcloud_common</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md10"></a>
+Usage</h2>
+<p>Source your workspace:</p>
+<div class="fragment"><div class="line">source ~/ros2_ws/install/setup.bash</div>
+</div><!-- fragment --><p>Run the main node:</p>
+<div class="fragment"><div class="line">ros2 run easynav_system system_main --ros-args --params-file &lt;yaml file with parameters&gt;</div>
+</div><!-- fragment --><p>The file <code>maps_manager.params.yaml</code> could be modified to include the desired point cloud map types and their respective parameters.</p>
+<h1><a class="anchor" id="autotoc_md11"></a>
+How to create a parameter file for Pointcloud Maps Manager</h1>
+<ol type="1">
+<li>Create a parameter YAML file (e.g., <code>params.yaml</code>) with the following content:</li>
+</ol>
+<div class="fragment"><div class="line">maps_manager_node:</div>
+<div class="line">  ros__parameters:</div>
+<div class="line">    use_sim_time: true # When data source is from file this parameter should be set to false</div>
+<div class="line">    map_types: [PointCloudData] # Map types defined by the manager</div>
+<div class="line">    PointCloudData:</div>
+<div class="line">      plugin: easynav_pointcloud_maps_manager/PointCloudMapsManager # Plugin name</div>
+<div class="line">      map_topic_in: /map_builder/cloud_filtered # Topic where the point cloud is received</div>
+<div class="line">      package_name: easynav_outdoor_testcase # Package name where is located the `pcd` file.</div>
+<div class="line">      map_path_file: maps/pointcloud_map.pcd  # Filename for `pcd` map file.</div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 <!-- start footer part -->
