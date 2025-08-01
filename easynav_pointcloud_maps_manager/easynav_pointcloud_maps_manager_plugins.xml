@@ -1,0 +1,9 @@
+<class_libraries>
+  <library path="easynav_pointcloud_maps_manager">
+    <class name="easynav_pointcloud_maps_manager/PointCloudMapsManager"  type="easynav::PointCloudMapsManager" base_class_type="easynav::MapsManagerBase">
+      <description>
+      An implementation for the Maps Manager using Point Cloud representation.
+      </description>
+    </class>
+  </library>
+</class_libraries>
